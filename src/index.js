@@ -39,10 +39,22 @@ function displayTemperature(response) {
     "src",
     `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
   );
+  iconElement.setAttribute("alt", response.data.weather[0].description);
 }
 
-let apiKey = "95f4246d3ed416a00b60d11bef81aa4f";
-let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=Tompkinsville&appid=${apiKey}&units=imperial`;
+function search(city) {
+  let apiKey = "95f4246d3ed416a00b60d11bef81aa4f";
+  let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${apiKey}&units=imperial`;
+  axios.get(apiUrl).then(displayTemperature);
+}
 
-console.log(apiUrl);
-axios.get(apiUrl).then(displayTemperature);
+function handleSubmit(event) {
+  event.preventDefault();
+  let cityInputElement = document.querySelector("#city-input");
+  search(cityInputElement.value);
+}
+
+search("Tompkinsville");
+
+let form = document.querySelector("#search-form");
+form.addEventListener("submit", handleSubmit);
